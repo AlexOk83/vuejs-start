@@ -3,14 +3,11 @@
         <div class="container pt-5 text-center">
             <h1>{{title}}</h1>
         </div>
+        <router-view></router-view>
     </div>
 </template>
 
 <script>
-    import Counter from './components/Counter'
-    import SecondCounter from './components/SecondCounter'
-    import Actions from './components/Actions'
-
     export default {
 
 
