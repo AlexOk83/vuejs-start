@@ -22,27 +22,20 @@
         name: "header",
         data() {
             return {
-                routes: [
-                    {
-                        title: 'Доходы',
-                        path: '/debet'
-                    },
-                    {
-                        title: 'Расходы',
-                        path: '/credit'
-                    },
-                    {
-                        title: 'Калькулятор',
-                        path: '/calc'
-                    },
-                    {
-                        title: 'Настройки',
-                        path: '/settings'
-                    },
-                ],
+                routes: [],
                 showMenu: false,
                 currentPath: this.$route.path
             }
+        },
+        created() {
+            this.$router.options.routes.forEach(route => {
+                if (!route.hidden) {
+                    this.routes.push({
+                        title: route.name,
+                        path: route.path
+                    })
+                }
+            })
         },
         watch: {
             $route(toR) {
