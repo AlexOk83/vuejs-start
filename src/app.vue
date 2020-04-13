@@ -1,13 +1,13 @@
 <template>
     <div id="app">
-        <div class="container pt-5 text-center">
-            <h1>{{title}}</h1>
-        </div>
+        <Header />
         <router-view></router-view>
     </div>
 </template>
 
 <script>
+    import Header from './components/Header'
+
     export default {
 
 
@@ -17,7 +17,7 @@
             }
         },
         components: {
-
+            Header,
         },
         computed: {
             title() {
