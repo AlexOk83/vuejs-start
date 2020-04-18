@@ -60,7 +60,8 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
-    noInfo: true
+    noInfo: true,
+    overlay: true
   },
   devtool: '#eval-source-map'
 }
@@ -76,7 +77,7 @@ if (process.env.NODE_ENV === 'production') {
     }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
-        warnings: false
+        warnings: true
       }
     }),
     new webpack.LoaderOptionsPlugin({

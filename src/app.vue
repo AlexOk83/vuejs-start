@@ -1,7 +1,10 @@
 <template>
     <div id="app">
         <Header />
-        <router-view></router-view>
+        <div class="container">
+            <router-view />
+        </div>
+
     </div>
 </template>
 
@@ -9,20 +12,23 @@
     import Header from './components/Header'
 
     export default {
-
-
-        data () {
-            return {
-                counter: 0
-            }
-        },
         components: {
             Header,
         },
-        computed: {
-            title() {
-                return this.$store.getters.computedTitle
+        methods: {
+            getData() {
+                console.log('...загрузка')
+                this.$resource('categories').get()
+                    .then(response => response.json())
+                    .then(category => {
+                        console.log(category)
+                        this.$store.commit('getCategory', category);
+                        console.log('...загружено')
+                    })
             }
+        },
+        created() {
+            this.getData();
         }
     }
 </script>
