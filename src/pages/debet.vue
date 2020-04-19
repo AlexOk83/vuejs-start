@@ -14,6 +14,7 @@
                 v-if="showForm"
                 :data="editLine"
                 :show.sync="showForm"
+                :reload="getData"
         />
     </div>
 </template>
@@ -39,11 +40,7 @@
                         value: "value"
                     }
                 ],
-                editLine: {
-                    id: '',
-                    category: '',
-                    value: '',
-                }
+                editLine: null,
             }
         },
         components: {
@@ -52,22 +49,21 @@
         },
         methods: {
             getData() {
-                this.resource = this.$resource('debets');
                 this.resource.get()
                     .then(response => response.json())
                     .then(debets => {
                         this.debets = debets.map(debet => ({
                             ...debet,
-                            category: this.getCurrentCategory(debet.id).name
+                            category: this.getCurrentCategory(debet.category).name
                         }));
                     })
             },
             getCurrentCategory(id, name) {
-                return this.$store.getters.computedDebetCategory().find(item => (item.id === id || item.name === name)) || {};
+                return this.$store.getters.computedDebetCategory.find(item => (item.id === id || item.name === name)) || {};
             },
             add() {
                 this.editLine = {
-                    id: '',
+                    id: null,
                     category: '',
                     value: '',
                 };
@@ -81,10 +77,11 @@
                 this.showForm = true;
             },
             deleteDebet: function (row) {
-                console.log('Удаление - ', row);
+                this.resource.remove({id: row.id}).then(this.getData)
             }
         },
         created() {
+            this.resource = this.$resource('debets{/id}');
             this.getData();
         }
     }

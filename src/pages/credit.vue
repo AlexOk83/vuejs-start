@@ -13,6 +13,7 @@
         <FormEditCredit v-if="showForm"
                         :data="editLine"
                         :show.sync="showForm"
+                        :reload="getData"
         />
     </div>
 </template>
@@ -42,12 +43,7 @@
                         value: "comment",
                     },
                 ],
-                editLine: {
-                    id: '',
-                    category: '',
-                    value: '',
-                    comment: '',
-                }
+                editLine: null,
             }
         },
         components: {
@@ -56,13 +52,12 @@
         },
         methods: {
             getData() {
-                this.resource = this.$resource('credits');
                 this.resource.get()
                     .then(response => response.json())
                     .then(credits => {
                         this.credits = credits.map(credit => ({
                             ...credit,
-                            category: this.getCurrentCategory(credit.id).name
+                            category: this.getCurrentCategory(credit.category).name
                         }));
                     })
             },
@@ -71,7 +66,7 @@
             },
             addCredit() {
                 this.editLine = {
-                    id: '',
+                    id: null,
                     category: '',
                     value: '',
                     comment: '',
@@ -86,10 +81,11 @@
                 this.showForm = true;
             },
             deleteCredit: function (row) {
-                console.log('Удаление - ', row);
+                this.resource.remove({id: row.id}).then(this.getData)
             }
         },
         created() {
+            this.resource = this.$resource('credits{/id}');
             this.getData();
         }
     }

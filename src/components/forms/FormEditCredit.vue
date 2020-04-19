@@ -4,8 +4,8 @@
             <tr class="line">
                 <td class=" edit-id" />
                 <td class="edit-category">
-                    <select class="form-control" v-if="category.length" v-model="formValues.category" v-for="option of category">
-                        <option :value="option.id">{{option.name}}</option>
+                    <select class="form-control" v-model="formValues.category">
+                        <option v-for="option of category" :value="option.id">{{option.name}}</option>
                     </select>
                 </td>
                 <td class="edit-value">
@@ -31,13 +31,12 @@
 
     export default {
         name: "FormEditCredit",
-        props: ['data', 'show'],
+        props: ['data', 'show', 'reload'],
         data(){
             return {
+                resource: null,
                 category: [],
-                formValues: {
-
-                }
+                formValues: null,
             }
         },
         components: {
@@ -46,24 +45,30 @@
         methods: {
             onSubmit(event) {
                 event.preventDefault();
-                console.log(this.data);
+                if (this.formValues.id) {
+                    this.resource.update({id: this.formValues.id}, this.formValues)
+                    .then(this.save);
+                } else {
+                    this.resource.save(this.formValues)
+                    .then(this.save)
+                }
+            },
+            save() {
+                this.$emit('update:show', false);
+                this.reload();
             },
             initializeForm() {
                 this.category = this.$store.getters.computedCreditCategory;
                 this.formValues = {...this.data};
-                console.log(this.formValues);
             },
             onClear(event) {
                 event.preventDefault();
-                this.initializeForm();
                 this.$emit('update:show', false)
             }
         },
         created() {
+            this.resource = this.$resource('credits{/id}');
             this.initializeForm();
-        },
-        updated() {
-            console.log(this.formValues);
         }
     }
 </script>
