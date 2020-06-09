@@ -4,6 +4,7 @@ import Debet from './pages/debet'
 import Credit from './pages/credit'
 import Calculator from './pages/calc'
 import Settings from './pages/Settings'
+import Tetris from './pages/tetris'
 
 
 export default new VueRouter({
@@ -33,6 +34,11 @@ export default new VueRouter({
             name: 'Настройки',
             path: '/settings',
             component: Settings,
+        },
+        {
+            name: 'Тетрис',
+            path: '/game',
+            component: Tetris,
         }
     ],
 })
