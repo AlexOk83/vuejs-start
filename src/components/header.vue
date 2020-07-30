@@ -8,7 +8,8 @@
             <div v-bind:class='{show: show}' class="collapse navbar-collapse" >
 
                 <ul class="navbar-nav" v-for="item of routes">
-                    <router-link tag="li" class="nav-item" :to="item.path" active-class="active">
+                    <DropdownMenu v-if="item.dropdown" :title="item.title" :menu="item.dropdown" />
+                    <router-link tag="li" class="nav-item" :to="item.path" active-class="active"  v-else>
                         <a class="nav-link">{{item.title}}</a>
                     </router-link>
                 </ul>
@@ -18,8 +19,13 @@
 </template>
 
 <script>
+    import DropdownMenu from './dropdown-menu';
+
     export default {
         name: "header",
+        components:{
+            DropdownMenu,
+        },
         data() {
             return {
                 routes: [],
@@ -32,7 +38,8 @@
                 if (!route.hidden) {
                     this.routes.push({
                         title: route.name,
-                        path: route.path
+                        path: route.path,
+                        dropdown: route.children,
                     })
                 }
             })
