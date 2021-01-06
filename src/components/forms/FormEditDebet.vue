@@ -3,6 +3,9 @@
         <table>
             <tr class="line">
                 <td class=" edit-id" />
+                <td class="edit-date">
+                    <input class="form-control" type="date" v-model="formValues.date">
+                </td>
                 <td class="edit-category">
                     <select class="form-control" v-model="formValues.category">
                         <option v-for="option of category" :value="option.id">{{option.name}}</option>

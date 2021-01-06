@@ -21,6 +21,7 @@
 <script>
     import DataTable from "../components/DataTable";
     import FormEditCredit from "../components/forms/FormEditCredit";
+    import moment from 'moment'
 
     export default {
         name: "credit",
@@ -30,6 +31,10 @@
                 showForm: false,
                 credits: [],
                 columnsCredit: [
+                    {
+                        name: "Дата",
+                        value: "date"
+                    },
                     {
                         name: "Категория",
                         value: "category"
@@ -57,6 +62,7 @@
                     .then(credits => {
                         this.credits = credits.map(credit => ({
                             ...credit,
+                            date: moment(credit.date).format('DD.MM.yyyy'),
                             category: this.getCurrentCategory(credit.category).name
                         }));
                     })
@@ -67,6 +73,7 @@
             addCredit() {
                 this.editLine = {
                     id: null,
+                    date: moment(new Date()),
                     category: '',
                     value: '',
                     comment: '',

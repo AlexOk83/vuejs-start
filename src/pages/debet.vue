@@ -22,6 +22,7 @@
 <script>
     import DataTable from "../components/DataTable";
     import FormEditDebet from "../components/forms/FormEditDebet";
+    import moment from "moment";
 
     export default {
         name: "credit",
@@ -31,6 +32,10 @@
                 showForm: false,
                 debets: [],
                 columnsDebet: [
+                    {
+                        name: "Дата",
+                        value: "date"
+                    },
                     {
                         name: "Категория",
                         value: "category"
@@ -54,6 +59,7 @@
                     .then(debets => {
                         this.debets = debets.map(debet => ({
                             ...debet,
+                            date: moment(debet.date).format('DD.MM.yyyy'),
                             category: this.getCurrentCategory(debet.category).name
                         }));
                     })
